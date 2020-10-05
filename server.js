@@ -20,7 +20,7 @@ io.on('connection', socket => {
 
         socket.join(user.room)
 
-        socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'))
+        socket.emit('message', formatMessage(botName, 'Welcome to ChitChat!'))
 
         socket.broadcast
             .to(user.room)
