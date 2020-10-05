@@ -1,7 +1,9 @@
 # [Chit Chat](https://chit-chat-online.herokuapp.com/)
 
 Realtime chat app with websockets using, vanilla JS, Node.js, Express, Socket.io, HTML5, and CSS
-Join a chat room and discuss your favorite hobbies and passions with online friends around the world
+
+Join a chat room and discuss your favorite hobbies and passions with online friends around the world. 
+Deployed on Heroku: [Chit Chat](https://chit-chat-online.herokuapp.com/)
 
 ### Login/Landing Page
 Choose the chat room that most interests you
