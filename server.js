@@ -1,33 +1,60 @@
 const express = require('express')
 const path = require('path')
 const http = require('http')
-const socektio = require('socket.io')
-
 const app = express()
+
 const server = http.createServer(app)
+const socektio = require('socket.io')
 const io = socektio(server)
+
+const formatMessage = require('./utils/messages')
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/users')
 
 app.use(express.static(path.join(__dirname, 'public')))
 
 io.on('connection', socket => {
-    console.log('New websocket connection..')
-    
-    //emits to the client connecting
-    socket.emit('message', 'Welcome to ChatRoom!')
+    const botName = 'Chat Bot'
 
-    //Broadcast when a user connects (not the one connecting)
-    socket.broadcast.emit('message', 'A user has joined the chat')
+    socket.on('joinRoom', ({ username, room }) => {
+        const user = userJoin({ id: socket.id, username, room })
 
-    //When client disconnects
-    socket.on('disconnect', () => {
-        io.emit('message', 'A user has left the chat :(')
+        socket.join(user.room)
+
+        socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'))
+
+        socket.broadcast
+            .to(user.room)
+            .emit('message', formatMessage(botName, `${user.username} has joined the chat`))
+
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        })
     })
 
-    //to all clients
-    io.emit('')
+    socket.on('chatMessage', msg => {
+        const user = getCurrentUser(socket.id)
+
+        io.to(user.room).emit('message', formatMessage(user.username, msg))
+    })
+
+    socket.on('disconnect', () => {
+        const user = userLeave(socket.id)
+
+        if (user) {
+            io.to(user.room).emit('message', formatMessage(botName, `${user.username} has left the chat`))
+
+            io.to(user.room).emit('roomUsers',
+                {
+                    room: user.room,
+                    users: getRoomUsers(user.room)
+                }
+            )
+        }
+    })
 })
 
 const PORT = process.env.PORT || 3002
-server.listen(PORT, ()=> {
+server.listen(PORT, () => {
     console.log(`server running on ${PORT}`)
 })
