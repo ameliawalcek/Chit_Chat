@@ -11,4 +11,4 @@ Choose the chat room that most interests you<br/>
 
 ### Chat room
 Connect with other users in that same chat room LIVE! Disucss interests and make friends<br/>
-<img src="https://cdn1.bbcode0.com/uploads/2020/10/5/64910afe8e6ac50bf66bc9c8a2cb705a-full.jpg" border="0"  width="800px"/>
+<img src="https://i.ibb.co/tXHjHZJ/Chat-Page-Chit-Chat.jpg" alt="Chat-Page-Chit-Chat" border="0" width="800px">
